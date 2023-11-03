@@ -58,11 +58,11 @@ def workday(driver):
   print("Declined Cookies")
 
   wait(1)
-  driver.find_element(By.LINK_TEXT,"Apply").click()
+  driver.find_element(By.XPATH,"//a[@data-automation-id='adventureButton']").click()
   print("Click Apply")
 
   wait(1)
-  driver.find_element(By.LINK_TEXT, "Apply Manually").click()
+  driver.find_element(By.XPATH, "//a[@data-automation-id='applyManually']").click()
   print("Click Apply Manually")
 
   wait(4)
@@ -84,22 +84,10 @@ def workday(driver):
     print("'No' selected for previous employment")
 
   try:
-    driver.find_element(By.XPATH, "//button[@data-automation-id='legalNameSection_title']").send_keys(Keys.ENTER)
+    driver.find_element(By.XPATH, "//button[@data-automation-id='legalNameSection_title']").send_keys(Keys.ENTER + "Mr" + Keys.ENTER)
   except NoSuchElementException:
     print("No Prefix Option")
     pass
-  except ElementClickInterceptedException:
-    print("Prefix is not clickable")
-    pass
-  else:
-    wait(1)
-    try:
-      driver.find_element(By.XPATH, "/html/body/div[6]/div[2]/ul/li[4]/div").click()
-    except NoSuchElementException:
-      print("Can't Select")
-      pass
-    else:
-      print("Clicked Prefix")
 
   wait(0.5)
   driver.find_element(By.XPATH, "//input[@data-automation-id='legalNameSection_firstName']").send_keys(information["firstName"])
@@ -109,22 +97,10 @@ def workday(driver):
   driver.find_element(By.XPATH, "//input[@data-automation-id='email']").send_keys(information["email"])
 
   try:
-    driver.find_element(By.XPATH, "//button[@data-automation-id='phone-device-type']").send_keys(Keys.ENTER)
+    driver.find_element(By.XPATH, "//button[@data-automation-id='phone-device-type']").send_keys(Keys.ENTER + "Mobile" + Keys.ENTER)
   except NoSuchElementException:
     print("No Device Type Option")
     pass
-  except ElementClickInterceptedException:
-    print("Device Type is not clickable")
-    pass
-  else:
-    wait(1)
-    try:
-      driver.find_element(By.XPATH, "/html/body/div[6]/div[2]/ul/li[3]/div").click()
-    except NoSuchElementException:
-      print("Can't Select")
-      pass
-    else:
-      print("Clicked Device Type")
 
   driver.find_element(By.XPATH, "//input[@data-automation-id='phone-number']").send_keys(information["phoneNumber"])
   driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
@@ -165,7 +141,7 @@ def workday(driver):
   driver.find_element(By.XPATH, "//input[@data-automation-id='file-upload-input-ref']").send_keys("C:\\Users\\ryanl\\Desktop\\Resume-CV.docx")
   driver.find_element(By.XPATH, "//input[@data-automation-id='linkedinQuestion']").send_keys(information["linkedin"])
   driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
-  wait(3.5)
+  wait(3)
 
   driver.find_element(By.XPATH, "//button[@data-automation-id='d3608a04c8ef1001f4464a1d10740000']").send_keys(Keys.ENTER + "Y" + Keys.ENTER) # can start internship on date
   driver.find_element(By.XPATH, "//button[@data-automation-id='d3608a04c8ef1001f4464a1d10740003']").send_keys(Keys.ENTER + "Y" + Keys.ENTER) # graduate in penultimate year
@@ -177,14 +153,14 @@ def workday(driver):
   driver.find_element(By.XPATH, "//button[@data-automation-id='d3608a04c8ef1001f4464b506d3e0006']").send_keys(Keys.ENTER + "N" + Keys.ENTER) # RAP
   driver.find_element(By.XPATH, "//button[@data-automation-id='d3608a04c8ef1001f4464bea263a0002']").send_keys(Keys.ENTER + "N" + Keys.ENTER) # know anyone in the company
   driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
-  wait(3.5)
+  wait(3)
 
   driver.find_element(By.XPATH, "//button[@data-automation-id='76311b02889e0101962e6526022d0000']").send_keys(Keys.ENTER + "Routine" + Keys.ENTER) # occupation of main income earner when 14
   driver.find_element(By.XPATH, "//button[@data-automation-id='76311b02889e0101962e65bfe0510008']").send_keys(Keys.ENTER + "Independent or fee-paying school, where" + Keys.ENTER) # type of school at 11-16
   driver.find_element(By.XPATH, "//button[@data-automation-id='76311b02889e0101962e65bfe0510009']").send_keys(Keys.ENTER + "I don't know" + Keys.ENTER) # free school meals
   driver.find_element(By.XPATH, "//button[@data-automation-id='76311b02889e0101962e65bfe051000a']").send_keys(Keys.ENTER + "Y" + Keys.ENTER) # parents attend uni
   driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
-  wait(3.5)
+  wait(3)
 
   driver.find_element(By.XPATH, "//button[@data-automation-id='gender']").send_keys(Keys.ENTER + "Male" + Keys.ENTER)
   driver.find_element(By.XPATH, "//input[@data-automation-id='dateSectionMonth-input']").send_keys(information["birthMonth"])
@@ -196,12 +172,10 @@ def workday(driver):
   driver.find_element(By.XPATH, "//button[@data-automation-id='pronoun']").send_keys(Keys.ENTER + "He" + Keys.ENTER)
   driver.execute_script("arguments[0].click();",driver.find_element(By.XPATH, "//input[@data-automation-id='agreementCheckbox']"))
   driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
-  wait(3.5)
+  wait(3)
 
   # driver.find_element(By.XPATH, "//button[@data-automation-id='bottom-navigation-next-button']").click()
-
-  if input("close?").lower() == "y":
-    return
+  return
 
 
 if __name__ == "__main__":
