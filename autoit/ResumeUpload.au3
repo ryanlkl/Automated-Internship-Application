@@ -1,0 +1,5 @@
+ControlFocus("Open","","ToolbarWindow323")
+ControlSetText("Open","","ToolbarWindow323","C:\\Users\\ryanl\\Desktop")
+ControlFocus("Open","","Edit1")
+ControlSetText("Open","","Edit1","Resume-CV.docx")
+ControlClick("Open","","Button1")
