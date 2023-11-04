@@ -24,12 +24,9 @@ if __name__ == "__main__":
     driver.implicitly_wait(1)
 
     if "myworkdayjobs" in url:
-      workday(driver)
+      workday(driver,url)
     elif "smartrecruiters" in url:
       smartrecruiters(driver)
     elif "greenhouse" in url:
       greenhouse(driver)
-    driver.close()
     wait(5)
-
-  driver.quit()
