@@ -1,5 +1,5 @@
 from selenium import webdriver
-from sites.workday import workday
+from sites.workday import WorkDay
 from sites.smartrecruiters import smartrecruiters
 from sites.greenhouse import greenhouse
 from utilities import *
@@ -24,9 +24,9 @@ if __name__ == "__main__":
     driver.implicitly_wait(1)
 
     if "myworkdayjobs" in url:
-      workday(driver,url)
+      workday = WorkDay(driver)
+      workday.workday()
     elif "smartrecruiters" in url:
       smartrecruiters(driver)
     elif "greenhouse" in url:
       greenhouse(driver)
-    wait(5)

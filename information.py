@@ -1,6 +1,7 @@
 from decouple import config
 
 information = {
+  "date": ["06","01","2023"],
   "title": config("TITLE"),
   "firstName": config("FIRSTNAME"),
   "lastName": config("LASTNAME"),
