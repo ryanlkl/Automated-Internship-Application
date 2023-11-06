@@ -8,12 +8,11 @@ from utilities import *
 class WorkDay():
   def __init__(self,driver):
     self.driver = driver
-    self.fromCount = 0
-    self.toCount = 0
-    self.add_another_button = 0
-    self.pages = 0
 
-  def decline_cookeis(self):
+  def next_page(self):
+    return find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True)
+
+  def decline_cookies(self):
     return find_element_by_xpath(self.driver,"button","data-automation-id='legalNoticeDeclineButton'",click=True)
 
   def click_apply(self):
@@ -25,6 +24,12 @@ class WorkDay():
     return
 
   def register(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='signInContent'")
+
+    if not section:
+      print("No Sign In Section")
+      return
+
     # Log in
     # find_element_by_xpath(self.driver,"button","data-automation-id='createAccountLink'",click=True)
 
@@ -36,7 +41,7 @@ class WorkDay():
 
   def my_information(self):
     find_element_by_xpath(self.driver,"div","data-automation-id='formField-sourcePrompt'",Keys.ENTER,"Linkedin",Keys.ENTER,path="/div/div/div/div[1]/div[1]/input")
-    execute_click(self.driver,find_element_by_xpath(self.driver,"div","data-automation-id='previousWorker'",path="/div[2]/div/input"))
+    execute_click(self.driver,find_element_by_xpath(self.driver,"div","data-automation-id='previousWorker'",path="/div[2]/div/input")) # Selecting No
     find_element_by_xpath(self.driver,"button","data-automation-id='legalNameSection_title'",Keys.ENTER,information["title"],Keys.ENTER)
     find_element_by_xpath(self.driver,"input","data-automation-id='legalNameSection_firstName'",information["firstName"])
     find_element_by_xpath(self.driver,"input","data-automation-id='legalNameSection_lastName'",information["lastName"])
@@ -47,76 +52,96 @@ class WorkDay():
     find_element_by_xpath(self.driver,"input","data-automation-id='email'",information["email"])
     find_element_by_xpath(self.driver,"button","data-automation-id='phone-device-type'",Keys.ENTER,"Mobile",Keys.ENTER)
     find_element_by_xpath(self.driver,"input","data-automation-id='phone-number'",information["phoneNumber"])
-    find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True)
     return
 
   def work_experience(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='workExperienceSection'")
+
+    if not section:
+      print("No Work Experience Section")
+      return
+
     for i in range(len(workExperience)):
+
         w = workExperience[i]
-        find_element_by_xpath(self.driver,"input","data-automation-id='jobTitle'",w["title"],index=i)
-        find_element_by_xpath(self.driver,"input","data-automation-id='company'",w["company"],index=i)
-        find_element_by_xpath(self.driver,"input","data-automation-id='location'",w["location"],index=i)
+        find_element_by_xpath(section,"input","data-automation-id='jobTitle'",w["title"],index=i)
+        find_element_by_xpath(section,"input","data-automation-id='company'",w["company"],index=i)
+        find_element_by_xpath(section,"input","data-automation-id='location'",w["location"],index=i)
         if w["workCurrently"]:
           execute_click(self.driver,find_element_by_xpath(self.driver,"input","data-automation-id='currentlyWorkHere'",index=i))
-        find_element_by_xpath(self.driver,"input","data-automation-id='dateSectionMonth-input'",w["fromMonth"],index=2*i)
-        find_element_by_xpath(self.driver,"input","data-automation-id='dateSectionYear-input'",w["fromYear"],index=2*i)
-        self.fromCount += 2
+        find_element_by_xpath(section,"input","data-automation-id='dateSectionMonth-input'",w["fromMonth"],index=2*i)
+        find_element_by_xpath(section,"input","data-automation-id='dateSectionYear-input'",w["fromYear"],index=2*i)
         if not w["workCurrently"]:
-          find_element_by_xpath(self.driver,"input","data-automation-id='dateSectionMonth-input'",w["toMonth"],index=(2*i)+1)
-          find_element_by_xpath(self.driver,"input","data-automation-id='dateSectionYear-input'",w["toYear"],index=(2*i)+1)
-          self.toCount += 2
-        find_element_by_xpath(self.driver,"textarea","data-automation-id='description'",w["description"],index=i)
-        if find_element_by_xpath(self.driver,"div",f"data-automation-id='workExperience-{len(workExperience)}'"):
+          find_element_by_xpath(section,"input","data-automation-id='dateSectionMonth-input'",w["toMonth"],index=(2*i)+1)
+          find_element_by_xpath(section,"input","data-automation-id='dateSectionYear-input'",w["toYear"],index=(2*i)+1)
+        find_element_by_xpath(section,"textarea","data-automation-id='description'",w["description"],index=i)
+
+        if find_element_by_xpath(section,"div",f"data-automation-id='workExperience-{len(workExperience)}'"):
           break
+
         if i < len(workExperience) - 1:
-          find_element_by_xpath(self.driver,"button","data-automation-id='Add Another'",Keys.ENTER,index=self.add_another_button)
+          find_element_by_xpath(section,"button","data-automation-id='Add Another'",Keys.ENTER,index=i)
+
         wait(1)
     return
 
   def education(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='educationSection'")
+
     find_element_by_xpath(self.driver,"button","aria-label='Add Education'",Keys.ENTER)
+
+    if not section:
+      print("No Education Section")
+      return
+
     for i in range(len(education)):
+
       e = education[i]
-      find_element_by_xpath(self.driver,"input","data-automation-id='school'",e["university"],index=i)
-      find_element_by_xpath(self.driver,"button","data-automation-id='degree'",Keys.ENTER,"B",Keys.ENTER,index=i)
-      find_element_by_xpath(self.driver,"div","data-automation-id='formField-field-of-study'",e["fieldOfStudy"],Keys.ENTER,path="/div/div/div/div/div[1]/div[1]/input",index=i)
-      find_element_by_xpath(self.driver,"div",f"data-automation-label='{e['fieldOfStudy']}'",click=True)
+      find_element_by_xpath(section,"input","data-automation-id='school'",e["university"],index=i)
+      find_element_by_xpath(section,"button","data-automation-id='degree'",Keys.ENTER,"B",Keys.ENTER,index=i)
+      find_element_by_xpath(section,"div","data-automation-id='formField-field-of-study'",e["fieldOfStudy"],Keys.ENTER,path="/div/div/div/div/div[1]/div[1]/input",index=i)
+      find_element_by_xpath(section,"div",f"data-automation-label='{e['fieldOfStudy']}'",click=True)
 
-      find_element_by_xpath(self.driver,"input","data-automation-id='gpa'",e["overallGPA"],index=i)
-      try:
-        find_element_by_xpath(self.driver,"div","data-automation-id='formField-startDate'",e["from"],index=self.fromCount,path="/div/div/div[2]/div/div/input")
-        self.fromCount += 1
-      except IndexError:
-        print(IndexError)
+      find_element_by_xpath(section,"input","data-automation-id='gpa'",e["overallGPA"],index=i)
+      find_element_by_xpath(section,"input","data-automation-id='dateSectionYear-input'",e["from"],index=2*i)
+      find_element_by_xpath(section,"input","data-automation-id='dateSectionYear-input'",e["to"],index=(2*i)+1)
 
-      try:
-        find_element_by_xpath(self.driver,"div","data-automation-id='formField-endDate'",e["to"],index=self.toCount,path="/div/div/div[2]/div/div/input")
-        self.toCount += 1
-      except IndexError:
-        print(IndexError)
-
-      if find_element_by_xpath(self.driver,"div",f"data-automation-id='education-{len(education)}'"):
+      if find_element_by_xpath(section,"div",f"data-automation-id='education-{len(education)}'"):
         break
 
       if i < len(education) - 1:
-        find_element_by_xpath(self.driver,"button","data-automation-id='Add Another'",click=True,index=self.add_another_button)
+        find_element_by_xpath(self.driver,"button","data-automation-id='Add Another'",click=True)
       wait(1)
     return
 
   def languages(self):
+
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='languageSection'")
+
+    if not section:
+      print("No Languages Section")
+      return
+
     execute_click(self.driver,find_element_by_xpath(self.driver,"button","aria-label='Add Languages'"))
     wait(1)
-    find_element_by_xpath(self.driver,"button","data-automation-id='language'",Keys.ENTER,"English",Keys.ENTER)
+    find_element_by_xpath(section,"button","data-automation-id='language'",Keys.ENTER,"English",Keys.ENTER)
     execute_click(self.driver,find_element_by_xpath(self.driver,"input","data-automation-id='nativeLanguage'"))
     for i in range(5):
-      find_element_by_xpath(self.driver,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER)
-      if len(self.driver.find_elements(By.XPATH, "//ul[@role='listbox']/li/div")) > 4 and find_element_by_xpath(self.driver,"ul","role='listbox'",path="/li/div",index=3).text == "A - Beginner":
-        find_element_by_xpath(self.driver,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER,"C",Keys.ENTER)
+      find_element_by_xpath(section,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER)
+      wait(0.5)
+      if len(section.find_elements(By.XPATH, "//ul[@role='listbox']/li/div")) > 4 and find_element_by_xpath(self.driver,"ul","role='listbox'",path="/li/div",index=3).text == "A - Beginner":
+        find_element_by_xpath(section,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER,"C",Keys.ENTER)
       else:
-        find_element_by_xpath(self.driver,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER,"h",Keys.ENTER)
+        find_element_by_xpath(section,"button",f"data-automation-id='languageProficiency-{i}'",Keys.ENTER,"h",Keys.ENTER)
     return
 
   def skills(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='skillsSection'")
+
+    if not section:
+      print("No Skills Section")
+      return
+
     for skill in information["skills"]:
       wait(0.5)
       find_element_by_xpath(self.driver,"div","data-automation-id='formField-skillsPrompt'",skill,Keys.ENTER,path="/div/div/div/div/div[1]/input")
@@ -126,9 +151,22 @@ class WorkDay():
     return
 
   def upload_resume(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='resumeSection'")
+
+    if not section:
+      print("No Resume Section")
+      return
+
     find_element_by_xpath(self.driver,"input","data-automation-id='file-upload-input-ref'","C:\\Users\\ryanl\\Desktop\\Resume-CV.docx")
+
+  def social_network(self):
+    section = find_element_by_xpath(self.driver,"div","data-automation-id='socialNetworkSection'")
+
+    if not section:
+      print("No Social Media Section")
+      return
+
     find_element_by_xpath(self.driver,"input","data-automation-id='linkedinQuestion'",information["linkedin"])
-    find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True)
 
   def application_questions(self):
     find_element_by_xpath(self.driver,"button","data-automation-id='d5f66974c56b1000ad2a15ca82220000'",Keys.ENTER,"Y",Keys.ENTER) # currently attending uni
@@ -151,7 +189,6 @@ class WorkDay():
     find_element_by_xpath(self.driver,"button","data-automation-id='76311b02889e0101962e65bfe0510008'",Keys.ENTER,information["secondarySchool"],Keys.ENTER) # type of school at 11-16
     find_element_by_xpath(self.driver,"button","data-automation-id='76311b02889e0101962e65bfe0510009'",Keys.ENTER,information["freeMeals"],Keys.ENTER) # free school meals
     find_element_by_xpath(self.driver,"button","data-automation-id='76311b02889e0101962e65bfe051000a'",Keys.ENTER,information["parentsAttendUni"],Keys.ENTER) # parents attend uni
-    find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True) # Next
     return
 
   def voluntary_disclosures(self):
@@ -161,65 +198,58 @@ class WorkDay():
     find_element_by_xpath(self.driver,"input","data-automation-id='dateSectionYear-input'",information["birthYear"])
     find_element_by_xpath(self.driver,"button","data-automation-id='maritalStatus'",Keys.ENTER,information["maritalStatus"],Keys.ENTER)
     find_element_by_xpath(self.driver,"button","data-automation-id='ethnicity'",information["ethnicity"],Keys.ENTER)
+    find_element_by_xpath(self.driver,"input","data-automation-id-prompt='ethnicities'",information["ethnicity"],Keys.ENTER)
     find_element_by_xpath(self.driver,"button","data-automation-id='sexualOrientation'",Keys.ENTER,information["orientation"],Keys.ENTER)
     find_element_by_xpath(self.driver,"button","data-automation-id='pronoun'",Keys.ENTER,information["pronoun"],Keys.ENTER)
     execute_click(self.driver,find_element_by_xpath(self.driver,"input","data-automation-id='agreementCheckbox'"))
-    find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True)
     return
 
   def workday(self):
     # Decline Cookies
-    wait(3)
-    self.decline_cookeis()
+
+    self.decline_cookies()
     self.click_apply()
-
     # Apply Manually
-    wait(5)
+    wait(2.5)
     self.apply_manually()
-
-    wait(5)
+    wait(2.5)
     self.register()
-
-    # Basic Information Page
-    wait(4)
+    # Basic Information
+    wait(3)
     self.my_information()
-
-    # Experience Page
-
+    # Next Page
+    self.next_page()
     # Experience Section
-    wait(5)
-    if find_element_by_xpath(self.driver,"div","data-automation-id='workExperienceSection'"):
-      self.work_experience()
-      self.add_another_button += 1
-      wait(3)
-
+    wait(3)
+    self.work_experience()
     # Education Section
-    if find_element_by_xpath(self.driver,"div","data-automation-id='educationSection'"):
-      self.education()
 
+    self.education()
     # Language Section
     wait(1)
-    if find_element_by_xpath(self.driver,"div","data-automation-id='languageSection'"):
-      self.languages()
-
+    self.languages()
     # Skill Section
-    if find_element_by_xpath(self.driver,"div","data-automation-id='skillsSection'"):
-      self.skills()
-
-    # Resume Upload
+    self.skills()
+    # Resume Section
     self.upload_resume()
-    wait(3)
+    # Social Media Section
+    self.social_network()
 
+    # Next Page
+    self.next_page()
     # Application Questions
     self.pages = len(self.driver.find_elements(By.XPATH, "//div[@data-automation-id='progressBar']/div"))
     print(self.pages)
     for _ in range(self.pages - 4):
+      wait(1.5)
       print("doing")
       self.application_questions()
-      wait(3)
+      self.next_page()
 
+    # Volunatry Disclosures
     self.voluntary_disclosures()
-    wait(3)
+    self.next_page()
 
+    # Submit
     # find_element_by_xpath(self.driver,"button","data-automation-id='bottom-navigation-next-button'",click=True)
     return

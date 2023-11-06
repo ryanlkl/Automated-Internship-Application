@@ -9,7 +9,7 @@ def wait(seconds):
   return
 
 def load(driver,route):
-   return WebDriverWait(driver,5,EC.presence_of_all_elements_located((By.XPATH,route)))
+   return WebDriverWait(driver,5,EC.presence_of_element_located((By.XPATH,route)))
 
 def find_element_by_xpath(driver, tag, attribute_text, *keys, click=False, path="",index=None):
     try:
@@ -23,6 +23,9 @@ def find_element_by_xpath(driver, tag, attribute_text, *keys, click=False, path=
     except ElementNotInteractableException:
         print(f"ElementNotInteractableException: {tag}[@{attribute_text}]")
         return None
+    except IndexError:
+       print("IndexError")
+       return None
 
     # Check if the element is an input and already has a value
     if (tag == "input" or path.endswith("/input")) and element.get_attribute("value"):

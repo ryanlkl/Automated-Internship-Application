@@ -1,19 +1,20 @@
 import openai
 from decouple import config
 from information import *
+import requests
 
 openai.organization = "org-QYjvQh3cb3VZlXOk0lWndUr1"
 openai.api_key = config("API_KEY")
 
-def choose_answer(question,answersMap):
+def choose_answer(question,answersMap=information):
   closest_match = None
   closest_score = 0
 
   for k in answersMap:
     response = openai.Completion.create(
-      engine="davinci",
+      model="gpt-3.5-turbo-instruct",
       prompt=f"What option is closest to '{question}' from the following options: {k}?",
-      max_tokens = 50,
+      max_tokens = 150,
       n = 1,
       stop = None,
       temperature=0.7

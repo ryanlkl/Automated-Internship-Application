@@ -7,7 +7,7 @@ from utilities import *
 add = True
 urls = []
 while add:
-  url = input("Please enter the URL for the application or hit 'Enter' to continue:\n")
+  url = input("\nPlease enter the URL for the application or hit 'Enter' to continue:\n")
   if url.lower() == "":
     break
   urls.append(url)
@@ -30,3 +30,5 @@ if __name__ == "__main__":
       smartrecruiters(driver)
     elif "greenhouse" in url:
       greenhouse(driver)
+
+    input("Please confirm your details then press 'Enter'")
