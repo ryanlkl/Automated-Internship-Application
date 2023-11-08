@@ -38,12 +38,13 @@ def find_element_by_xpath(driver, tag, attribute_text, *keys, click=False, path=
     # Click the element if 'click' is set to True
     if click:
         element.click()
-        return element
+        return
 
     # Send keys to the element if 'keys' are provided
     if keys:
+        print(keys)
         element.send_keys(keys)
-        return element
+        return
 
     return element
 

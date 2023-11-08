@@ -8,33 +8,18 @@ information = {
   "email": config("EMAIL"),
   "address1": config("ADDRESS1"),
   "address2": config("ADDRESS2"),
+  "county": config("COUNTY"),
   "city": config("CITY"),
   "postCode": config("POSTCODE"),
   "phoneNumber": config("PHONENUMBER"),
   "linkedin": config("LINKEDIN"),
+  "github": "https://github.com/ryanlkl",
   "birthDay": config("BIRTHDAY"),
   "birthMonth": config("BIRTHMONTH"),
   "birthYear": config("BIRTHYEAR"),
   "skills": ["Python","HTML","CSS","MATLAB","C","Flask","React","Pandas","Bootstrap","Selenium Webdriver","BeautifulSoup","Detail-Oriented","Communication"],
   "location": "Birmingham, United Kingdom",
   "password": config("PASSWORD"),
-  "startInternshipOnDate": config("STARTINTERNSHIPONDATE"),
-  "graduateInYear": config("GRADUATEINYEAR"),
-  "workInUK": config("WORKINUK"),
-  "needSponsorship": config("NEEDSPONSORSHIP"),
-  "RTWDocument": config("RTWDOCUMENT"),
-  "appliedForMultiple": config("APPLIEDFORMULTIPLE"),
-  "workedForPartners": config("WORKEDFORPARTNERS"),
-  "RAP": config("RAP"),
-  "knowAnyoneInCompany": config("KNOWANYONEINCOMPANY"),
-  "mainIncome": config("MAININCOME"),
-  "secondarySchool": config("SECONDARYSCHOOL"),
-  "freeMeals": config("FREEMEALS"),
-  "parentsAttendUni": config("PARENTSATTENDUNI"),
-  "maritalStatus": config("MARITALSTATUS"),
-  "gender": config("GENDER"),
-  "ethnicity": config("ETHNICITY"),
-  "orientation": config("ORIENTATION"),
   "pronoun": config("PRONOUN")
 }
 
@@ -89,7 +74,7 @@ education = [
   {
     "university": "University of Birmingham",
     "degree": "Bachelors",
-    "fieldOfStudy": "Mechanical Engineering",
+    "fieldOfStudy": "Mechanical engineering",
     "overallGPA": "3.7",
     "from": "2021",
     "to": "2025"
@@ -102,3 +87,6 @@ education = [
     "from": "2023",
     "to": "2024"
   },]
+
+application_questions = {
+}
